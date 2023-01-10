@@ -22,7 +22,7 @@ struct Markdown: View {
                 ForEach(arrText, id: \.self, content: { atext in
                     if TextStyle(text: atext) == .delimiter {
                         Divider()
-                    }else if TextStyle(text: atext) == .image {
+                    } else if TextStyle(text: atext) == .image {
                         AsyncImage(url: atext.getImageURL()) { image in
                             image
                                 .resizable()
@@ -35,7 +35,7 @@ struct Markdown: View {
                                 Text(atext.getAttributedString())
                             }
                         }
-                    }else if TextStyle(text: atext) == .itemization {
+                    } else if TextStyle(text: atext) == .itemization {
                         HStack {
                             Circle()
                                 .frame(width: 5)
@@ -43,7 +43,7 @@ struct Markdown: View {
                             Text(atext.getAttributedString())
                         }
                         
-                    }else if TextStyle(text: atext) == .reference {
+                    } else if TextStyle(text: atext) == .reference {
                         HStack {
                             Rectangle()
                                 .foregroundColor(.orange)
@@ -59,6 +59,13 @@ struct Markdown: View {
                                 Spacer()
                             }
                         )
+                        
+                    } else if TextStyle(text: atext) == .num{
+                        HStack {
+                            Text("\(atext.getNum())")
+                                .font(.system(.body, design: .monospaced))
+                            Text(atext.getAttributedString())
+                        }
                         
                     } else {
                         Text(atext.getAttributedString())
@@ -81,31 +88,15 @@ struct Markdown: View {
     }
 }
 
-extension String {
-    func getAttributedString() -> AttributedString {
-        do {
-            let attributedString = try AttributedString(markdown: self)
-            return attributedString
-        } catch {
-            print("Couldn't parse: \(error)")
-        }
-        return AttributedString("Error parsing markdown")
-    }
-    
-    func getImageURL() -> URL {
-        let url = self.components(separatedBy: "(")
-        let url2 = url[1].components(separatedBy: ")")
-        return URL(string: url2[0])!
-    }
-}
 
 struct Markdown_Previews: PreviewProvider {
     static var previews: some View {
-        //        Markdown(.constant("# Apple\nRyo"))
         Markdown(.constant("""
+# Apple
 > Apple
-> Apple
-![qiita-square.png](https://qiita-image-store.s3.amazonaws.com/0/126861/90386757-fd96-8ba6-3477-485669713c55.png)
++ Apple
+1. Apple
+![qiita-square.png](https://storage.googleapis.com/zenn-user-upload/avatar/8cb73f5e8f.jpeg)
 """))
     }
 }
