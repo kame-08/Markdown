@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct Markdown: View {
-    
     @Binding var text: String
     @State var arrText: [String] = []
     
